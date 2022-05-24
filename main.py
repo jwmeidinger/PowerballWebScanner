@@ -1,16 +1,18 @@
 from selenium import webdriver
 import pandas as pd
+import time
 
 options = webdriver.ChromeOptions() 
 options.add_experimental_option("excludeSwitches", ["enable-logging"])
-browser = webdriver.Chrome(options=options, executable_path= "/Users/Jordan's Desktop/Desktop/Powerball/chromedriver.exe")
+options.add_argument("--disable-blink-features=AutomationControlled")
+browser = webdriver.Chrome(options=options, executable_path= "/Users/Jordan's Desktop/Desktop/Powerball/PowerballWebScanner/chromedriver.exe")
 numbers = []
 
-for z in range(1,117):
+for z in range(2,117):
     print(f"Scanning pages{z}")
     url = f'https://www.usamega.com/powerball/results/{z}'
     browser.get(url)
-
+    #time.sleep(2)
     num_results = browser.find_elements_by_class_name('results')
     
     for y in range(1,len(num_results)):
@@ -24,7 +26,7 @@ for z in range(1,117):
         numbers.append(items)
 
 
-print(numbers)    
+#print(numbers)    
 
 pd.DataFrame(numbers).to_excel('output.xlsx', header=False, index=False)
 
